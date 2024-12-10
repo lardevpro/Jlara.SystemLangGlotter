@@ -1,0 +1,104 @@
+.languages {
+    padding: 5rem 2rem;
+  
+    @media (max-width: 768px) {
+      padding: 3rem 1rem;
+      
+      h2 {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+      }
+      
+      .language-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
+      }
+      
+      .language-card {
+        padding: 1.5rem;
+      }
+    }
+  
+    h2 {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      color: #1a1a1a;
+      font-weight: 600;
+      font-size: 2rem;
+    }
+  
+    .language-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+  
+      .language-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        border: 1px solid #eaeaea;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+  
+        &:hover {
+          transform: translateY(-6px);
+          border-color: #1a1a1a;
+  
+          .lang-icon {
+            transform: scale(1.2) rotate(5deg);
+          }
+  
+          .progress-bar .progress {
+            background: #000;
+          }
+        }
+  
+        .lang-icon {
+          font-size: 2rem;
+          margin-bottom: 1rem;
+          transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          display: inline-block;
+        }
+  
+        h4 {
+          color: #1a1a1a;
+          margin-bottom: 1rem;
+          font-weight: 500;
+          transition: color 0.3s ease;
+        }
+  
+        .progress-bar {
+          background: #f0f0f0;
+          height: 4px;
+          border-radius: 2px;
+          overflow: hidden;
+          position: relative;
+  
+          .progress {
+            height: 100%;
+            background: #1a1a1a;
+            transition: all 0.4s ease;
+            position: relative;
+  
+            &::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+              animation: shine 2s infinite;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  @keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  

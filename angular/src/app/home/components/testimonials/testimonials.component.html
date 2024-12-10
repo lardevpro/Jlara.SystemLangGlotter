@@ -1,0 +1,20 @@
+<section class="testimonials">
+    <h2>Lo que dicen nuestros estudiantes</h2>
+    <div class="testimonial-wrapper">
+      <div class="testimonial-carousel">
+        <div class="testimonial-card" *ngFor="let testimonial of testimonials">
+          <img [src]="testimonial.avatar" [alt]="testimonial.name" class="avatar">
+          <p class="quote">{{testimonial.quote}}</p>
+          <h3 class="author">{{testimonial.name}}</h3>
+          <span class="location">{{testimonial.location}}</span>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>Desliza para ver más</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+  

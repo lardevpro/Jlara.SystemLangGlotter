@@ -1,0 +1,12 @@
+<section class="languages">
+    <h2>Idiomas disponibles</h2>
+    <div class="language-grid">
+      <div class="language-card" *ngFor="let lang of languages">
+        <span class="lang-icon">{{lang.icon}}</span>
+        <h4>{{lang.name}}</h4>
+        <div class="progress-bar">
+          <div class="progress" [style.width]="lang.level"></div>
+        </div>
+      </div>
+    </div>
+  </section>

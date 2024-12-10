@@ -1,0 +1,296 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\Abp\\Tests\\JLara.SistemLang\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}|src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.domain\\jlarasystemleng.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}|src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj|solutionrelative:src\\jlarasystemleng.domain\\jlarasystemleng.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70680696-BB1E-4383-BCB2-42C3767171FB}|src\\JLaraSystemLeng.DbMigrator\\JLaraSystemLeng.DbMigrator.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.dbmigrator\\jlarasystemleng.dbmigrator.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{70680696-BB1E-4383-BCB2-42C3767171FB}|src\\JLaraSystemLeng.DbMigrator\\JLaraSystemLeng.DbMigrator.csproj|solutionrelative:src\\jlarasystemleng.dbmigrator\\jlarasystemleng.dbmigrator.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.entityframeworkcore\\jlarasystemleng.entityframeworkcore.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|solutionrelative:src\\jlarasystemleng.entityframeworkcore\\jlarasystemleng.entityframeworkcore.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\jlarasystemlengdbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|solutionrelative:src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\jlarasystemlengdbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\jlarasystemlengdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|solutionrelative:src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\jlarasystemlengdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\entityframeworkcorejlarasystemlengdbschemamigrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|solutionrelative:src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\entityframeworkcorejlarasystemlengdbschemamigrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\jlarasystemlengentityframeworkcoremodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|solutionrelative:src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\jlarasystemlengentityframeworkcoremodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\jlarasystemlengefcoreentityextensionmappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C956DD76-69C8-4A9C-83EA-D17DF83340FD}|src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj|solutionrelative:src\\jlarasystemleng.entityframeworkcore\\entityframeworkcore\\jlarasystemlengefcoreentityextensionmappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A94A50E-06DC-43C1-80B5-B662820EC3EB}|src\\JLaraSystemLeng.Application\\JLaraSystemLeng.Application.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.application\\jlarasystemlengapplicationautomapperprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A94A50E-06DC-43C1-80B5-B662820EC3EB}|src\\JLaraSystemLeng.Application\\JLaraSystemLeng.Application.csproj|solutionrelative:src\\jlarasystemleng.application\\jlarasystemlengapplicationautomapperprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}|src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.domain\\exercises\\exercise.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}|src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj|solutionrelative:src\\jlarasystemleng.domain\\exercises\\exercise.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}|src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.domain\\sugesstions\\sugesstion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}|src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj|solutionrelative:src\\jlarasystemleng.domain\\sugesstions\\sugesstion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}|src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.domain\\progresses\\progress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}|src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj|solutionrelative:src\\jlarasystemleng.domain\\progresses\\progress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{42F719ED-8413-4895-B5B4-5AB56079BC66}|src\\JLaraSystemLeng.Domain.Shared\\JLaraSystemLeng.Domain.Shared.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.domain.shared\\jlarasystemleng.domain.shared.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{42F719ED-8413-4895-B5B4-5AB56079BC66}|src\\JLaraSystemLeng.Domain.Shared\\JLaraSystemLeng.Domain.Shared.csproj|solutionrelative:src\\jlarasystemleng.domain.shared\\jlarasystemleng.domain.shared.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A94A50E-06DC-43C1-80B5-B662820EC3EB}|src\\JLaraSystemLeng.Application\\JLaraSystemLeng.Application.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.application\\jlarasystemleng.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{1A94A50E-06DC-43C1-80B5-B662820EC3EB}|src\\JLaraSystemLeng.Application\\JLaraSystemLeng.Application.csproj|solutionrelative:src\\jlarasystemleng.application\\jlarasystemleng.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96E5259E-59A3-4FAF-BCD1-5BF8E74EF82C}|src\\JLaraSystemLeng.HttpApi.Host\\JLaraSystemLeng.HttpApi.Host.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.httpapi.host\\jlarasystemlenghttpapihostmodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{96E5259E-59A3-4FAF-BCD1-5BF8E74EF82C}|src\\JLaraSystemLeng.HttpApi.Host\\JLaraSystemLeng.HttpApi.Host.csproj|solutionrelative:src\\jlarasystemleng.httpapi.host\\jlarasystemlenghttpapihostmodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{96E5259E-59A3-4FAF-BCD1-5BF8E74EF82C}|src\\JLaraSystemLeng.HttpApi.Host\\JLaraSystemLeng.HttpApi.Host.csproj|f:\\abp\\tests\\jlara.sistemlang\\src\\jlarasystemleng.httpapi.host\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{96E5259E-59A3-4FAF-BCD1-5BF8E74EF82C}|src\\JLaraSystemLeng.HttpApi.Host\\JLaraSystemLeng.HttpApi.Host.csproj|solutionrelative:src\\jlarasystemleng.httpapi.host\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "JLaraSystemLeng.Domain",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj",
+              "RelativeToolTip": "src\\JLaraSystemLeng.Domain\\JLaraSystemLeng.Domain.csproj",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-07T13:34:20.006Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "JLaraSystemLeng.DbMigrator",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.DbMigrator\\JLaraSystemLeng.DbMigrator.csproj",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.DbMigrator\\JLaraSystemLeng.DbMigrator.csproj",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.DbMigrator\\JLaraSystemLeng.DbMigrator.csproj",
+              "RelativeToolTip": "src\\JLaraSystemLeng.DbMigrator\\JLaraSystemLeng.DbMigrator.csproj",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-07T13:31:29.655Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "JLaraSystemLeng.EntityFrameworkCore",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj",
+              "RelativeToolTip": "src\\JLaraSystemLeng.EntityFrameworkCore\\JLaraSystemLeng.EntityFrameworkCore.csproj",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-07T13:30:23.502Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "EntityFrameworkCoreJLaraSystemLengDbSchemaMigrator.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\EntityFrameworkCoreJLaraSystemLengDbSchemaMigrator.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\EntityFrameworkCoreJLaraSystemLengDbSchemaMigrator.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\EntityFrameworkCoreJLaraSystemLengDbSchemaMigrator.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\EntityFrameworkCoreJLaraSystemLengDbSchemaMigrator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T13:20:16.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "JLaraSystemLengEfCoreEntityExtensionMappings.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengEfCoreEntityExtensionMappings.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengEfCoreEntityExtensionMappings.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengEfCoreEntityExtensionMappings.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengEfCoreEntityExtensionMappings.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T13:20:11.311Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "JLaraSystemLengDbContextFactory.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengDbContextFactory.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengDbContextFactory.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengDbContextFactory.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengDbContextFactory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T13:20:08.998Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "JLaraSystemLengEntityFrameworkCoreModule.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengEntityFrameworkCoreModule.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengEntityFrameworkCoreModule.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengEntityFrameworkCoreModule.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengEntityFrameworkCoreModule.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAC8AAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T13:16:48.004Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "JLaraSystemLengDbContext.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengDbContext.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengDbContext.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengDbContext.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.EntityFrameworkCore\\EntityFrameworkCore\\JLaraSystemLengDbContext.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAlwFoAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T13:16:13.254Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Sugesstion.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain\\Sugesstions\\Sugesstion.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.Domain\\Sugesstions\\Sugesstion.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain\\Sugesstions\\Sugesstion.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.Domain\\Sugesstions\\Sugesstion.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T12:56:08.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "JLaraSystemLengApplicationAutoMapperProfile.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Application\\JLaraSystemLengApplicationAutoMapperProfile.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.Application\\JLaraSystemLengApplicationAutoMapperProfile.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Application\\JLaraSystemLengApplicationAutoMapperProfile.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.Application\\JLaraSystemLengApplicationAutoMapperProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T12:45:20.505Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "JLaraSystemLeng.Domain.Shared",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain.Shared\\JLaraSystemLeng.Domain.Shared.csproj",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.Domain.Shared\\JLaraSystemLeng.Domain.Shared.csproj",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain.Shared\\JLaraSystemLeng.Domain.Shared.csproj",
+              "RelativeToolTip": "src\\JLaraSystemLeng.Domain.Shared\\JLaraSystemLeng.Domain.Shared.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-07T12:44:41.032Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "JLaraSystemLeng.Application",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Application\\JLaraSystemLeng.Application.csproj",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.Application\\JLaraSystemLeng.Application.csproj",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Application\\JLaraSystemLeng.Application.csproj",
+              "RelativeToolTip": "src\\JLaraSystemLeng.Application\\JLaraSystemLeng.Application.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-07T12:43:49.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Progress.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain\\Progresses\\Progress.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.Domain\\Progresses\\Progress.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain\\Progresses\\Progress.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.Domain\\Progresses\\Progress.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T12:42:38.594Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Exercise.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain\\Exercises\\Exercise.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.Domain\\Exercises\\Exercise.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.Domain\\Exercises\\Exercise.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.Domain\\Exercises\\Exercise.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T12:40:47.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "JLaraSystemLengHttpApiHostModule.cs",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.HttpApi.Host\\JLaraSystemLengHttpApiHostModule.cs",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.HttpApi.Host\\JLaraSystemLengHttpApiHostModule.cs",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.HttpApi.Host\\JLaraSystemLengHttpApiHostModule.cs",
+              "RelativeToolTip": "src\\JLaraSystemLeng.HttpApi.Host\\JLaraSystemLengHttpApiHostModule.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T12:06:29.914Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.HttpApi.Host\\appsettings.json",
+              "RelativeDocumentMoniker": "src\\JLaraSystemLeng.HttpApi.Host\\appsettings.json",
+              "ToolTip": "F:\\Abp\\Tests\\JLara.SistemLang\\src\\JLaraSystemLeng.HttpApi.Host\\appsettings.json",
+              "RelativeToolTip": "src\\JLaraSystemLeng.HttpApi.Host\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-07T11:59:56.137Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+<app-tab></app-tab>
+<div class="progress-card full-screen">
+    <div class="user-info">
+      <img [src]="userPhoto" alt="User Photo" class="user-photo" />
+      <div class="user-details">
+        <h2>{{ userName }}</h2>
+        <p>Nivel: {{ level }}</p>
+        <br>
+        <p>Tiempo de Práctica: {{hoursPracticed}} h, {{minPracticed}} m, {{segPracticed}} s,</p>
+      </div>
+    </div>
+
+    <!-- NIVEL -->
+    <div class="progress-container">
+      <label for="progress-bar">Progreso del Nivel</label>
+      <div class="progress-bar">
+        <div
+        class="progress"
+        [style.width.%]="writtenSuccesses"
+        [attr.aria-valuenow]="writtenSuccesses"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        ></div>
+      </div>
+      <p>{{ progressLevel }}% completado del nivel total</p>
+
+      <!-- ACIERTOS PRONUNCIACIÓN -->
+      <div class="progress-bar">
+        <div
+          class="progress"
+          [style.width.%]="progressLevel"
+          [attr.aria-valuenow]="progressLevel"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+      <p>{{ pronunciationSuccesses }}% de aciertos en pronunciación</p>
+      
+      <!-- ACIERTOS ESCRITURA -->
+      <div class="progress-bar">
+        <div
+          class="progress"
+          [style.width.%]="writtenSuccesses"
+          [attr.aria-valuenow]="writtenSuccesses"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+      <p>{{ writtenSuccesses }}% de aciertos en escritura</p>
+    </div>
+
+    <!-- RECOMENDACIÓN -->
+    <div class="recommendation">
+      <h3>Recomendación</h3>
+      <p>{{ recommendation }}</p>
+    </div>
+  
+    <!-- FRASE MOTIVADORA -->
+    <div class="inspiration">
+      <blockquote>
+        "{{ inspirationalQuote }}"
+      </blockquote>
+    </div>
+  </div>
+  

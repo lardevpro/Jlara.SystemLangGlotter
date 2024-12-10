@@ -1,0 +1,117 @@
+.testimonials {
+    padding: 5rem 2rem;
+  
+    h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: #1a1a1a;
+    }
+  
+    .testimonial-wrapper {
+      max-width: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+  
+    .testimonial-carousel {
+      display: flex;
+      gap: 2rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 1rem;
+      
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  
+    .testimonial-card {
+      flex: 0 0 auto;
+      width: calc(100% - 4rem);
+      max-width: 350px;
+      scroll-snap-align: center;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      text-align: center;
+      transition: transform 0.3s ease;
+  
+      &:hover {
+        transform: translateY(-5px);
+      }
+  
+      .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 1.5rem;
+        object-fit: cover;
+        border: 3px solid #f8f9fa;
+      }
+  
+      .quote {
+        font-style: italic;
+        color: #666;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+  
+      .author {
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+      }
+  
+      .location {
+        color: #666;
+        font-size: 0.9rem;
+      }
+    }
+  
+    @media (max-width: 768px) {
+      padding: 3rem 1rem;
+  
+      h2 {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+      }
+  
+      .testimonial-card {
+        width: 85%;
+        min-width: 280px;
+        padding: 1.5rem;
+      }
+    }
+  
+    .scroll-indicator {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      color: #666;
+      font-size: 0.9rem;
+      opacity: 0.8;
+      
+      svg {
+        animation: slideRight 1.5s ease-in-out infinite;
+      }
+    }
+  
+    @keyframes slideRight {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+  
+    @media (max-width: 768px) {
+      .scroll-indicator {
+        display: flex;
+      }
+    }
+  }
+  

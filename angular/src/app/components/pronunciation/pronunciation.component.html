@@ -1,0 +1,45 @@
+<app-tab></app-tab>
+
+
+<div class="container mt-4">
+    <h2>Práctica de Pronunciación en Inglés</h2>
+  
+    <!-- Datos del usuario -->
+    <div class="mt-3">
+      <h5>{{ userName }}</h5>
+      <p>Nivel: {{ userLevel }}</p>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" [style.width.%]="userProgress" [attr.aria-valuenow]="userProgress" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  
+    <!-- Enunciado -->
+    <div class="mt-4">
+      <h4>{{ phraseToSay }}</h4>
+    </div>
+  
+    <!-- Barra de progreso para el feedback -->
+    <div class="mt-3">
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" [style.width.%]="progressBarValue" [attr.aria-valuenow]="progressBarValue" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  
+    <!-- Botón para grabación de audio -->
+    <div class="mt-4">
+      <button class="btn btn-primary" [disabled]="isRecording || isFeedbackActive" (click)="startRecording()">Grabar Audio</button>
+      <button class="btn btn-danger" [disabled]="!isRecording" (click)="stopRecording()">Detener Grabación</button>
+    </div>
+  
+    <!-- Contadores de aciertos y fallos -->
+    <div class="mt-4">
+      <p><strong>Aciertos:</strong> {{ correctAnswers }}</p>
+      <p><strong>Fallos:</strong> {{ incorrectAnswers }}</p>
+    </div>
+  
+    <!-- Temporizador de práctica -->
+    <div class="mt-4">
+      <h5>Tiempo de práctica: {{ practiceTime }} segundos</h5>
+    </div>
+  </div>
+  

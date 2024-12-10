@@ -1,0 +1,11 @@
+<section class="methodology">
+    <h2>Nuestra Metodología</h2>
+    <div class="method-grid">
+      <div class="method-card" *ngFor="let step of methodSteps">
+        <img [src]="step.icon" [alt]="step.title" class="method-icon">
+        <h3>{{step.title}}</h3>
+        <p>{{step.description}}</p>
+      </div>
+    </div>
+  </section>
+  
