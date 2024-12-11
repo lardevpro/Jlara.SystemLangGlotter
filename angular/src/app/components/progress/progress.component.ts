@@ -6,6 +6,7 @@ import { ConfigStateService } from '@abp/ng.core';
 
 
 
+
 @Component({
   standalone: true,
   selector: 'app-progress',
@@ -28,7 +29,11 @@ export class ProgressComponent implements OnInit {
   recommendation: string = 'Practica vocabulario nuevo todos los días.';
   inspirationalQuote: string = 'La práctica hace al maestro.';
   progressDto: ProgressDto | null = null;
-  time: any;
+  time: { hours: number, minutes: number, seconds: number } = { 
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  };
   currentUser: any;
   isLoading: boolean = true;
 
@@ -63,7 +68,6 @@ export class ProgressComponent implements OnInit {
           if(this.progressDto == null) {
             this.initProgress();
           }
-            console.log('ELLL PROGRESOOO'+this.progressDto);
             this.initHtmlDataUser()
           if (result.items.length == 0) {
             
@@ -82,22 +86,18 @@ export class ProgressComponent implements OnInit {
   
   async showUserValues(): Promise<void> {
     const time = this.convertSecondsToDhms(this.progressDto.secondsPractice);
-    this.hoursPracticed = this.time.days;
-    this.minPracticed = this.time.hours;
-    this.segPracticed = this.time.minutes;
     this.initHtmlDataUser();  
   }
   
 
   //funcion para pasar de segundos a horas y minutos
-  async convertSecondsToDhms(seconds: number): Promise<{ days: number; hours: number; minutes: number; seconds: number; }> {
+  async convertSecondsToDhms(seconds: number): Promise <void> {
     const days = Math.floor(seconds / (24 * 3600));
     seconds %= 24 * 3600;
-    const hours = Math.floor(seconds / 3600);
+    this.hoursPracticed = Math.floor(seconds / 3600);
     seconds %= 3600;
-    const minutes = Math.floor(seconds / 60);
-    seconds %= 60;
-    return { days, hours, minutes, seconds };
+    this.minPracticed = Math.floor(seconds / 60);
+    this.segPracticed = seconds %= 60;
   }
 
 
@@ -122,7 +122,6 @@ export class ProgressComponent implements OnInit {
         
       this.progressDto = {
             userId: currentUser.id,
-            pronunciationAccuracy: 0,
             secondsPractice: 0,
             successesPronunciation: 0,
             successesWriting: 0,
@@ -153,9 +152,10 @@ export class ProgressComponent implements OnInit {
                 this.progressDto.level === 'advanced' ? 'Avanzado' :
                 this.progressDto.level === 'expert' ? 'Experto' :
                 'Desconocido';
-    this.progressLevel=   this.progressDto.progressLevelCurrent; //de 0 a 20 frases que hay por nivel
-    this.writtenSuccesses =  this.progressDto.successesWriting; 
-    this.pronunciationSuccesses =  this.progressDto.successesPronunciation; 
+    this.progressLevel = this.progressDto.progressLevelCurrent; //de 0 a 20 frases que hay por nivel
+    this.writtenSuccesses =  this.progressDto.successesWriting /20 * 100; 
+    this.pronunciationSuccesses =  this.progressDto.successesPronunciation /20 * 100;
+    console.log(this.progressDto); 
     }
 }
 

@@ -10,9 +10,6 @@ public class ProgressGetListInput : PagedAndSortedResultRequestDto
     [DisplayName("ProgressUserId")]
     public Guid? UserId { get; set; }
 
-    [DisplayName("PronunciationAccuracy")]
-    public decimal? PronunciationAccuracy { get; set; }
-
     [DisplayName("SecondsPractice")]
     public decimal? SecondsPractice { get; set; }
 

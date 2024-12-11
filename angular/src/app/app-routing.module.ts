@@ -31,7 +31,7 @@ const routes: Routes = [
   },
   {
     path: 'pronunciation',
-    loadComponent: () => import('./components/pronunciation/pronunciation.component').then(m => m.Pronunciation),
+    loadComponent: () => import('./components/pronunciation/pronunciation.component').then(m => m.PronunciationComponent),
   },
   {
     path: 'writing',

@@ -39,7 +39,7 @@ export class ProgressService {
     this.restService.request<any, PagedResultDto<ProgressDto>>({
       method: 'GET',
       url: '/api/app/progress',
-      params: { userId: input.userId, pronunciationAccuracy: input.pronunciationAccuracy, secondsPractice: input.secondsPractice, successesPronunciation: input.successesPronunciation, successesWriting: input.successesWriting, progressLevelCurrent: input.progressLevelCurrent, level: input.level, errorsPronunciation: input.errorsPronunciation, errorsWriting: input.errorsWriting, motivationalPhrase: input.motivationalPhrase, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+      params: { userId: input.userId, secondsPractice: input.secondsPractice, successesPronunciation: input.successesPronunciation, successesWriting: input.successesWriting, progressLevelCurrent: input.progressLevelCurrent, level: input.level, errorsPronunciation: input.errorsPronunciation, errorsWriting: input.errorsWriting, motivationalPhrase: input.motivationalPhrase, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
     { apiName: this.apiName,...config });
   
