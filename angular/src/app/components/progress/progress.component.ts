@@ -60,8 +60,11 @@ export class ProgressComponent implements OnInit {
       }).subscribe({
         next: (result) => {
           this.progressDto = result.items[0];
-          console.log('ELLL PROGRESOOO'+this.progressDto);
-          this.initHtmlDataUser()
+          if(this.progressDto == null) {
+            this.initProgress();
+          }
+            console.log('ELLL PROGRESOOO'+this.progressDto);
+            this.initHtmlDataUser()
           if (result.items.length == 0) {
             
           } 
@@ -145,11 +148,11 @@ export class ProgressComponent implements OnInit {
 
   initHtmlDataUser() {
     //this.userPhoto: string = 'https://via.placeholder.com/70';
-    this.level = this.progressDto.level === 'easy' ? 'Avanzado' :
-                 this.progressDto.level === 'medium' ? 'Medio' :
-                 this.progressDto.level === 'advanced' ? 'Avanzado' :
-                 this.progressDto.level === 'expert' ? 'Experto' :
-                 'Desconocido';
+    this.level = this.progressDto.level === 'easy' ? 'Principiante' :
+                this.progressDto.level === 'medium' ? 'Medio' :
+                this.progressDto.level === 'advanced' ? 'Avanzado' :
+                this.progressDto.level === 'expert' ? 'Experto' :
+                'Desconocido';
     this.progressLevel=   this.progressDto.progressLevelCurrent; //de 0 a 20 frases que hay por nivel
     this.writtenSuccesses =  this.progressDto.successesWriting; 
     this.pronunciationSuccesses =  this.progressDto.successesPronunciation; 
