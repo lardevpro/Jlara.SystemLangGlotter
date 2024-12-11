@@ -1,151 +1,106 @@
-import { Component } from '@angular/core';
-import { TabComponent } from "../tab/tab.component";
-import { ConfigStateService } from '@abp/ng.core';
-
-
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SpeechRecognitionService } from '../../services/speech-to-text-recognition.service';
 
 @Component({
   selector: 'app-pronunciation',
-  standalone: true,
-  imports: [TabComponent],
   templateUrl: './pronunciation.component.html',
-  styleUrl: './pronunciation.component.scss'
+  styleUrls: ['./pronunciation.component.scss'],
+  standalone: true,
 })
-export class PronunciationComponent  {
+export class Pronunciation implements OnInit, OnDestroy {
+  user = { name: 'John Doe', level: 1, image: '../../../assets/avatars/uifaces-popular-image (1).jpg' };
+  currentWord = '';
+  avatarState = '../../../assets/avatars/correct_request.png'; // Estado inicial del avatar
+  wordList = ['hello', 'world', 'angular', 'speech', 'recognition'];
+  wordAnswersCorrect = [];
+  progress = 0;
+  correctAnswers = 0;
+  incorrectAnswers = 0;
+  timer = 0;
+  feedback = '';
+  private interval: any;
 
+  constructor(private speechService: SpeechRecognitionService) {}
 
-    practiceTime: number = 0;
-    intervalId: any;
-    correctAnswers: number = 0;
-    incorrectAnswers: number = 0;
-    userName: string;
-    userLevel: string;
-    userProgress: number = 50; // 50% de progreso
-    isRecording: boolean = false;
-    isFeedbackActive: boolean = false; 
-    phraseToSay: string;
-    progressBarValue: number = 0;
-    exerciseList: any[] = [];
-    currentUserId: string;
-  
-
-  constructor(
-    configStateService: ConfigStateService,
-    
-    
-    
-  ) {
-    // Obtener datos del usuario
-    const currentUser = configStateService.getOne("currentUser");
-    this.userName = currentUser.userName;
-    this.currentUserId = currentUser.id;
-  
-    
-  }
-  
-  ngOnInit(): void {
-    //this.getExercises(this.exerciseList);
-    console.log(this.exerciseList);
+  ngOnInit() {
     this.startTimer();
-    this.chooseRandomExercise();
-    // this.getDificultyLevel();
-  
-  }
+    this.loadNextWord();
 
-
-
-
-
-  // getExercises(exerciseList : string []): void {
-  //   const input : ExerciseGetListInput = { //una lista de querys 
-  //     difficultyLevel: 'easy',
-  //     maxResultCount: 20,
-  //   };
-
-  //   this.exerciseService.getList(input).subscribe(result => {
-  //     this.exerciseList = result.items;
-  //     console.log(this.exerciseList);
-  //   });
-  // }
-
-  //elige un ejercicio aleatorio que no esté en la lista de ejercicios acertados del usuario
-  chooseRandomExercise(): void {
-    console.log(this.exerciseList);
-    const completedExercises = ['The sky is blue', 'exercise2']; // Simulación de ejercicios realizados
-    const availableExercises = this.exerciseList.filter(exercise => !completedExercises.includes(exercise.phrase));
-    
-    if (availableExercises.length > 0) {
-      const randomIndex = Math.floor(Math.random() * availableExercises.length);
-      const randomExercise = availableExercises[randomIndex];
-      console.log('Ejercicio aleatorio seleccionado:', randomExercise);
-      this.phraseToSay = randomExercise.phrase;
+    if (this.speechService.isSupported) {
+      this.speechService.initialize(
+        (transcript: string) => this.evaluatePronunciation(transcript),
+        (error: string) => (this.feedback = `Error: ${error}`)
+      );
     } else {
-      console.log('No hay ejercicios disponibles que no hayan sido completados.');
+      alert('Tu navegador no soporta la API de Reconocimiento de Voz.');
     }
   }
 
-  ngOnDestroy(): void {
-    // Detener temporizador al cambiar de componente
-    this.stopTimer();
-    // Guardar los datos (aquí simulado con console.log)
-    this.saveData();
+  ngOnDestroy() {
+    clearInterval(this.interval);
+    this.speechService.stop();
   }
 
-  startTimer(): void {
-    this.intervalId = setInterval(() => {
-      this.practiceTime++;
-    }, 1000); // Incrementa el tiempo cada segundo
+  startTimer() {
+    this.interval = setInterval(() => {
+        this.timer++;
+        //this.resetComponent();
+      }, 1000);
+    }
+    
+  resetComponent() {
+    clearInterval(this.interval);
+    this.timer = 0;
+    this.correctAnswers = 0;
+    this.incorrectAnswers = 0;
+    this.progress = 0;
+    this.feedback = '';
+    this.loadNextWord();
   }
 
-  stopTimer(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
+  loadNextWord() {
+    const remainingWords = this.wordList.filter(word => !this.wordAnswersCorrect.includes(word));
+    if (remainingWords.length > 0) {
+      const randomIndex = Math.floor(Math.random() * remainingWords.length);
+      this.currentWord = remainingWords[randomIndex];
+      this.feedback = ''; // Limpiar feedback al cargar una nueva palabra
+    } else {
+      this.currentWord = '';
+      this.feedback = '¡Felicidades! Has completadoel nivel.';
+      //cambiar nivel al usuario
+
+      
     }
   }
 
-  // Métodos para registrar aciertos y fallos
-  registerCorrect(): void {
-    this.correctAnswers++;
+  startRecording() {
+    this.feedback = 'Escuchando...';
+    this.speechService.start();
   }
 
-  registerIncorrect(): void {
-    this.incorrectAnswers++;
+  evaluatePronunciation(userSpeech: string) {
+    if (userSpeech.toLowerCase() === this.currentWord.toLowerCase()) {
+      this.wordAnswersCorrect.push(this.currentWord);
+      this.correctAnswers++;
+      this.feedback = '¡Correcto! Pronunciación perfecta.';
+      this.avatarState = '../../../assets/avatars/correct_request.png'; // Cambia el avatar
+    } else {
+      this.incorrectAnswers++;
+      this.feedback = `Incorrecto. Dijiste: "${userSpeech}". La palabra era: "${this.currentWord}".`;
+      this.avatarState = '../../../assets/avatars/error_request.png'; // Cambia el avatar
+    }
+    this.updateProgress();
+    this.loadNextWord();
   }
 
- // Simular la grabación de audio
- startRecording(): void {
-  if (this.isFeedbackActive) return; // No permitir grabación mientras el sistema da feedback
-
-  this.isRecording = true;
-  console.log('Grabando...');
-  // Lógica para grabar audio aquí (usando Web APIs o algún servicio)
-}
-
-// Finalizar grabación y dar feedback
-  stopRecording(): void {
-    this.isRecording = false;
-    console.log('Grabación detenida');
-    this.giveFeedback();
+  playFeedback() {
+    const utterance = new SpeechSynthesisUtterance(this.feedback);
+    utterance.lang = 'en-US'; // Configura el idioma
+    speechSynthesis.speak(utterance);
   }
 
-  // Simulación de feedback
-  giveFeedback(): void {
-    this.isFeedbackActive = true;
-    this.progressBarValue = 80; // Aumentar el progreso mientras se da feedback
-
-    // Después de 2 segundos, se desactiva el feedback y se actualiza la barra de progreso
-    setTimeout(() => {
-      this.isFeedbackActive = false;
-      this.progressBarValue = 100; // Completa el progreso cuando termina el feedback
-    }, 2000);
-  }
-
-  // Guardar los datos de la práctica
-  saveData(): void {
-    console.log('Guardando datos:');
-    console.log(`Tiempo: ${this.practiceTime} segundos`);
-    console.log(`Aciertos: ${this.correctAnswers}, Fallos: ${this.incorrectAnswers}`);
-    // Aquí iría el código para guardar en la base de datos
+  updateProgress() {
+    //const totalAttempts = this.correctAnswers + this.incorrectAnswers;
+    this.progress = this.wordList.length > 0 ? (this.correctAnswers / this.wordList.length) * 100 : 0;
   }
 }

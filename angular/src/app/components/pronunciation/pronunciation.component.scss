@@ -1,18 +1,102 @@
-.container {
-    text-align: center;
-  }
-  
-  .progress {
-    height: 20px;
-    margin-top: 10px;
-  }
-  
-  button {
-    margin: 10px;
-  }
-  
-  h5 {
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
+/* Contenedor principal */
+.assistant-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Layout horizontal */
+.layout-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px; /* Limita el ancho máximo */
+  gap: 20px;
+}
+
+/* Cada sección ocupa espacio proporcional */
+.user-info,
+.word-section,
+.feedback-section {
+  flex: 1; /* Cada sección toma un tercio del ancho disponible */
+  max-width: 33%; /* Limita el ancho máximo por sección */
+  margin-top: 150px;
+}
+
+/* Ajustes específicos para evitar desbordes */
+.user-info {
+  text-align: left;
+}
+
+.feedback-section {
+  text-align: center;
+}
+
+/* Elementos individuales */
+.user-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  object-fit: cover;
+}
+
+.feedback-box {
+  width: 100%; /* Ajusta al ancho disponible */
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  resize: none;
+  background-color: #f9f9f9;
+}
+
+.feedback-avatar {
+  margin-top: 10px;
+  margin-right: 120px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #fff;
+}
+
+.play-feedback {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.play-feedback:hover {
+  background-color: #0056b3;
+}
+
+/* Barra de progreso */
+.progress-container {
+  margin-top: 10px;
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: #f3f3f3;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.3s ease;
+}
