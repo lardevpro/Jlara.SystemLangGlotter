@@ -5,7 +5,8 @@ import { ProgressService } from '@proxy/jlara-system-leng/progresses';
 import { CreateUpdateProgressDto, ProgressDto } from '@proxy/jlara-system-leng/progresses/dtos';
 import { TabComponent } from '../tab/tab.component';
 import { timeout } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, interval } from 'rxjs';
+import { switchMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pronunciation',
@@ -22,7 +23,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
   };
   currentWord = '';
   avatarState = '../../../assets/avatars/correct_request.png';
-  wordList = ['hello', 'world', 'angular', 'speech', 'recognition'];
+  wordList = ['hello', 'angular', 'speech', 'recognition'];
   wordAnswersCorrect: string[] = [];
   progress = 0;
   correctAnswers = 0;
@@ -44,11 +45,6 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     this.user.name = this.currentUser?.userName || 'Usuario';
   }
 
-  @HostListener('window:beforeunload', ['$event'])
-  onBeforeUnload(event: Event) {
-    this.updateProgressUserDB();
-  }
-
   async ngOnInit() {
     try {
       await this.initializeUserProgress();
@@ -62,6 +58,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
       } else {
         alert('Tu navegador no soporta la API de Reconocimiento de Voz.');
       }
+      this.startAutoSave();
     } catch (error) {
       console.error('Error inicializando el componente:', error);
     }
@@ -78,13 +75,23 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
+  startAutoSave() {
+    interval(1000).pipe(
+      switchMap(() => this.updateProgressUserDB()),
+      catchError(error => {
+        console.error('Error al guardar el progreso del usuario:', error);
+        return of(null);
+      })
+    ).subscribe();
+  }
+
   resetComponent() {
     clearInterval(this.interval);
     this.timer = 0;
     this.correctAnswers = 0;
     this.incorrectAnswers = 0;
     this.progress = 0;
-    this.feedback = '';
+    //this.feedback = '';
     this.loadNextWord();
   }
 
@@ -95,7 +102,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     if (remainingWords.length > 0) {
       const randomIndex = Math.floor(Math.random() * remainingWords.length);
       this.currentWord = remainingWords[randomIndex];
-      this.feedback = '';
+      //this.feedback = '';
     } else {
       this.currentWord = '';
       this.feedback = '¡Felicidades! Has completado el nivel.';

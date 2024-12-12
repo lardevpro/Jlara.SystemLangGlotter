@@ -6,7 +6,7 @@
         <h2>{{ userName }}</h2>
         <p>Nivel: {{ level }}</p>
         <br>
-        <p>Tiempo de Práctica: {{hoursPracticed}} h, {{minPracticed}} m, {{segPracticed}} s,</p>
+        <p>Tiempo Total de Práctica: {{hoursPracticed}} h, {{minPracticed}} m, {{segPracticed}} s,</p>
       </div>
     </div>
 
@@ -40,8 +40,8 @@
       <div class="progress-bar">
         <div
           class="progress"
-          [style.width.%]="writtenSuccesses"
-          [attr.aria-valuenow]="writtenSuccesses"
+          [style.width.%]="pronunciationSuccesses"
+          [attr.aria-valuenow]="pronunciationSuccesses"
           aria-valuemin="0"
           aria-valuemax="100"
         ></div>
