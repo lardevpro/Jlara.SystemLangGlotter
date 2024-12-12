@@ -144,14 +144,25 @@ export class ProgressComponent implements OnInit {
         });
     }
 
+    private mapLevel(level: string): string {
+      switch (level) {
+        case 'easy':
+          return 'Principiante';
+        case 'medium':
+          return 'Medio';
+        case 'advanced':
+          return 'Avanzado';
+        case 'expert':
+          return 'Experto';
+        default:
+          return 'Desconocido';
+      }
+    }
 
   initHtmlDataUser() {
     //this.userPhoto: string = 'https://via.placeholder.com/70';
-    this.level = this.progressDto.level === 'easy' ? 'Principiante' :
-                this.progressDto.level === 'medium' ? 'Medio' :
-                this.progressDto.level === 'advanced' ? 'Avanzado' :
-                this.progressDto.level === 'expert' ? 'Experto' :
-                'Desconocido';
+    this.level = this.mapLevel(this.progressDto.level);
+    
     this.progressLevel = this.progressDto.progressLevelCurrent; //de 0 a 20 frases que hay por nivel
     this.writtenSuccesses =  this.progressDto.successesWriting /20 * 100; 
     this.pronunciationSuccesses =  this.progressDto.successesPronunciation /20 * 100;
