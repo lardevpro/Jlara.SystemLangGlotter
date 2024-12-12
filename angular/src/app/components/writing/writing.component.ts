@@ -1,10 +1,10 @@
 import { OnDestroy, OnInit } from "@angular/core";
 import { ProgressService } from "@proxy/jlara-system-leng/progresses/progress.service";
-import { SpeechRecognitionService } from "src/app/services/speech-to-text-recognition.service";
 import { Component } from "@angular/core";
 import { TabComponent } from "../tab/tab.component";
 import { catchError, of } from "rxjs";
 import { FormsModule } from "@angular/forms";
+import { ConfigStateService } from "@abp/ng.core";
 
 @Component({
   standalone: true,
@@ -15,9 +15,9 @@ import { FormsModule } from "@angular/forms";
 })
 export class WritingComponent implements OnInit, OnDestroy {
   user = {
-    name: 'Jane Doe',
-    level: 'Intermedio',
-    image: '../../../assets/avatars/uifaces-popular-image (1).jpg',
+    name: 'Usuario',
+    level: 'Desconocido',
+    image: '../../../assets/avatars/default_avatar.png',
   };
 
   wordAnswersCorrect: string[] = [];
@@ -32,7 +32,13 @@ export class WritingComponent implements OnInit, OnDestroy {
   userInput = '';
   private intervalId: any;
 
-  constructor(private progressService: ProgressService) {}
+  constructor(private progressService: ProgressService,
+                      configStateService: ConfigStateService,
+  ) 
+  {
+    this.user.name = configStateService.getOne('currentUser').userName;
+
+  }
 
   ngOnInit() {
     this.loadNextWord();
@@ -85,20 +91,20 @@ export class WritingComponent implements OnInit, OnDestroy {
     this.loadNextWord();
   }
 
-  // updateProgress(isCompleted: boolean) {
-  //   const progressData = {
-  //     userId: 1, // Cambia esto por el ID del usuario actual
-  //     progress: this.progress,
-  //     isCompleted
-  //   };
+    updateProgress(isCompleted: boolean) {
+      const progressData = {
+        userId: '1', // Cambia esto por el ID del usuario actual
+        progress: this.progress,
+        isCompleted
+      };
 
-  //   this.progressService.create(progressData).pipe(
-  //     catchError((error) => {
-  //       console.error('Error al actualizar el progreso:', error);
-  //       return of(null);
-  //     })
-  //   ).subscribe();
-  // }
+      this.progressService.create(progressData).pipe(
+        catchError((error) => {
+          console.error('Error al actualizar el progreso:', error);
+          return of(null);
+        })
+      ).subscribe();
+    }
 
     playFeedback() {
       const utterance = new SpeechSynthesisUtterance(this.feedback);
