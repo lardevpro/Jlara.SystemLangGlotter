@@ -1,101 +1,108 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { OnDestroy, OnInit } from "@angular/core";
+import { ProgressService } from "@proxy/jlara-system-leng/progresses/progress.service";
+import { SpeechRecognitionService } from "src/app/services/speech-to-text-recognition.service";
+import { Component } from "@angular/core";
 import { TabComponent } from "../tab/tab.component";
-import { CommonModule } from '@angular/common'; // Import CommonModule
-import { FormsModule } from '@angular/forms';
-import { ConfigStateService } from '@abp/ng.core';
-
+import { catchError, of } from "rxjs";
+import { FormsModule } from "@angular/forms";
 
 @Component({
-  selector: 'app-writing',
   standalone: true,
-  imports: [
-    TabComponent,
-    CommonModule, // Replace BrowserModule with CommonModule
-    FormsModule,
-  ],
+  selector: 'app-writing',
   templateUrl: './writing.component.html',
-  styleUrls: ['./writing.component.scss']
+  styleUrls: ['./writing.component.scss'],
+  imports: [FormsModule, TabComponent]
 })
 export class WritingComponent implements OnInit, OnDestroy {
-  practiceTime: number = 0;
-  intervalId: any;
-  correctAnswers: number = 0;
-  incorrectAnswers: number = 0;
-  userName: string;
-  userLevel: string = 'Principiante';
-  userProgress: number = 50;
-  phraseToWrite: string = '"Hello, how are you?"';
-  userInput: string = '';
-  isFeedbackActive: boolean = false;
-  progressBarValue: number = 0;
-  
-  
+  user = {
+    name: 'Jane Doe',
+    level: 'Intermedio',
+    image: '../../../assets/avatars/uifaces-popular-image (1).jpg',
+  };
 
-  constructor(
-    private config: ConfigStateService
-  ) { 
-    const currentUser = this.config.getOne("currentUser");
-    this.userName = currentUser.userName;
-  }
-  
-  
-  
+  wordAnswersCorrect: string[] = [];
+  avatarState = '../../../assets/avatars/correct_request.png';
+  wordList = ['hello', 'world', 'angular', 'typescript', 'javascript'];
+  currentWord = '';
+  feedback = '';
+  progress = 0;
+  correctAnswers = 0;
+  incorrectAnswers = 0;
+  timer = 0;
+  userInput = '';
+  private intervalId: any;
 
-  
-  
-  
+  constructor(private progressService: ProgressService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.loadNextWord();
     this.startTimer();
   }
 
-  ngOnDestroy(): void {
-    this.stopTimer();
-    this.saveData();
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
   }
 
-  startTimer(): void {
+  loadNextWord() {
+    const remainingWords = this.wordList.filter(
+      (word) => !this.wordAnswersCorrect.includes(word)
+    );
+    if (remainingWords.length > 0) {
+      const randomIndex = Math.floor(Math.random() * remainingWords.length);
+      this.currentWord = remainingWords[randomIndex];
+      //this.feedback = '';
+    } else {
+      this.currentWord = '';
+      this.feedback = '¡Felicidades! Has completado el nivel.';
+    }
+  }
+
+  startTimer() {
     this.intervalId = setInterval(() => {
-      this.practiceTime++;
+      this.timer++;
     }, 1000);
   }
 
-  stopTimer(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+  playWord() {
+    const utterance = new SpeechSynthesisUtterance(this.currentWord);
+    utterance.lang = 'en-US';
+    speechSynthesis.speak(utterance);
   }
 
-  registerCorrect(): void {
-    this.correctAnswers++;
-  }
-
-  registerIncorrect(): void {
-    this.incorrectAnswers++;
-  }
-
-  giveFeedback(): void {
-    this.isFeedbackActive = true;
-    this.progressBarValue = 80;
-    setTimeout(() => {
-      this.isFeedbackActive = false;
-      this.progressBarValue = 100;
-    }, 2000);
-  }
-
-  checkAnswer(): void {
-    if (this.userInput.trim().toLowerCase() === this.phraseToWrite.trim().toLowerCase()) {
-      this.registerCorrect();
+  validateWord() {
+    if (this.userInput.toLowerCase() === this.currentWord.toLowerCase()) {
+      this.correctAnswers++;
+      this.feedback = '¡Correcto!';
+      this.avatarState = '../../../assets/avatars/correct_request.png';
     } else {
-      this.registerIncorrect();
+      this.incorrectAnswers++;
+      this.feedback = `Incorrecto. La palabra correcta era: ${this.currentWord}`;
+      this.avatarState = '../../../assets/avatars/error_request.png';
     }
-    this.giveFeedback();
     this.userInput = '';
+    this.progress = (this.correctAnswers / this.wordList.length) * 100;
+    //this.updateProgress(false);
+    this.loadNextWord();
   }
 
-  saveData(): void {
-    console.log('Guardando datos:');
-    console.log(`Tiempo: ${this.practiceTime} segundos`);
-    console.log(`Aciertos: ${this.correctAnswers}, Fallos: ${this.incorrectAnswers}`);
-  }
+  // updateProgress(isCompleted: boolean) {
+  //   const progressData = {
+  //     userId: 1, // Cambia esto por el ID del usuario actual
+  //     progress: this.progress,
+  //     isCompleted
+  //   };
+
+  //   this.progressService.create(progressData).pipe(
+  //     catchError((error) => {
+  //       console.error('Error al actualizar el progreso:', error);
+  //       return of(null);
+  //     })
+  //   ).subscribe();
+  // }
+
+    playFeedback() {
+      const utterance = new SpeechSynthesisUtterance(this.feedback);
+      utterance.lang = 'en-US'; // Configura el idioma
+      speechSynthesis.speak(utterance);
+    }
 }

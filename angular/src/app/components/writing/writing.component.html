@@ -1,44 +1,53 @@
 <app-tab></app-tab>
-<div class="container mt-4">
-  <h2>Práctica de Escritura en Inglés</h2>
+<div class="assistant-container">
+  <div class="layout-container">
+    <!-- Información del usuario -->
+    <div class="user-info">
+      <h2>Información del Usuario</h2>
+      <p><strong>Nombre:</strong> {{ user.name }}</p>
+      <p><strong>Nivel:</strong> {{ user.level }}</p>
+      <p><strong>Progreso:</strong> {{ progress }}%</p>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div
+            class="progress-bar-fill"
+            [style.width]="progress + '%'">
+          </div>
+        </div>
+      </div>
+      <p><strong>Aciertos:</strong> {{ correctAnswers }}</p>
+      <p><strong>Fallos:</strong> {{ incorrectAnswers }}</p>
+    </div>
 
-  <div class="mt-3">
-    <h5>{{ userName }}</h5>
-    <p>Nivel: {{ userLevel }}</p>
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" [style.width.%]="userProgress" [attr.aria-valuenow]="userProgress" aria-valuemin="0" aria-valuemax="100"></div>
+    <!-- Área de práctica -->
+    <div class="practice-area">
+      <h3>Práctica de Escritura</h3>
+      <br><br>
+      <button (click)="playWord()">🔊 Escuchar Palabra</button>
+      <br><br><br>
+      <input 
+        type="text" 
+        [(ngModel)]="userInput" 
+        placeholder="Escribe la palabra aquí" 
+      />
+      <br>
+      <br><button (click)="validateWord()">Validar</button>
+    </div>
+
+    <!-- Sección de Feedback -->
+    <div class="feedback-section">
+      <h3>Feedback</h3>
+      <textarea
+        class="feedback-box"
+        readonly
+        [value]="feedback">
+      </textarea>
+      <img
+          class="feedback-avatar"
+          [src]="avatarState"
+          alt="Feedback Avatar" />
+          <br><br>
+        <button class="play-feedback" (click)="playFeedback()" aria-label="Reproducir Feedback">🔊 Escuchar Feedback</button>
+      </div>
     </div>
   </div>
-
-  <div class="mt-4">
-    <h4>{{ phraseToWrite }}</h4>
-  </div>
-
-  <div class="mt-3">
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" [style.width.%]="progressBarValue" [attr.aria-valuenow]="progressBarValue" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-  </div>
-
-  <div class="mt-4">
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="userInput" 
-      [disabled]="isFeedbackActive"
-      placeholder="Escribe la frase aquí..." />
-  </div>
-
-  <div class="mt-4">
-    <button class="btn btn-primary" [disabled]="isFeedbackActive || !userInput" (click)="checkAnswer()">Verificar Respuesta</button>
-  </div>
-
-  <div class="mt-4">
-    <p><strong>Aciertos:</strong> {{ correctAnswers }}</p>
-    <p><strong>Fallos:</strong> {{ incorrectAnswers }}</p>
-  </div>
-
-  <div class="mt-4">
-    <h5>Tiempo de práctica: {{ practiceTime }} segundos</h5>
-  </div>
-</div>

@@ -46,7 +46,7 @@ export class SpeechRecognitionService {
   /**
    * Inicia el reconocimiento de voz.
    */
-  start() {
+  start(p0: (transcript: string) => void) {
     if (this.recognition) {
       this.recognition.start();
     }

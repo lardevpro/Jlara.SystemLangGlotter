@@ -111,7 +111,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
 
   startRecording() {
     this.feedback = 'Escuchando...';
-    this.speechService.start();
+    //this.speechService.start();
   }
 
   async evaluatePronunciation(userSpeech: string) {
