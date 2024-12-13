@@ -3,18 +3,17 @@
   <div class="layout-container">
     <!-- Información del usuario -->
     <div class="user-info">
-      <h2> <img class="user-avatar" [src]="user.image" alt="User Avatar" /> {{user.name}}</h2>
+      <h2>
+        <img class="user-avatar" [src]="user.image" alt="User Avatar" />
+        {{ user.name }}
+      </h2>
       <p><strong>Progreso:</strong> {{ progress }}%</p>
       <div class="progress-container">
         <div class="progress-bar">
-          <div
-            class="progress-bar-fill"
-            [style.width]="progress + '%'">
-          </div>
+          <div class="progress-bar-fill" [style.width]="progress + '%'"></div>
         </div>
-      <p><strong>Nombre:</strong> {{ user.name }}</p>
-      <p><strong>Nivel:</strong> {{ user.level }}</p>
       </div>
+      <p><strong>Nivel:</strong> {{ user.level }}</p>
       <p><strong>Aciertos:</strong> {{ correctAnswers }}</p>
       <p><strong>Fallos:</strong> {{ incorrectAnswers }}</p>
       <div class="timer">
@@ -25,16 +24,16 @@
     <!-- Área de práctica -->
     <div class="practice-area">
       <h3>Práctica de Escritura</h3>
-      <br><br>
+      <br />
       <button (click)="playWord()">🔊 Escuchar Palabra</button>
-      <br><br><br>
-      <input 
-      type="text" 
-      [(ngModel)]="userInput" 
-      placeholder="Escribe la palabra aquí" 
+      <br /><br />
+      <input
+        type="text"
+        [(ngModel)]="userInput"
+        placeholder="Escribe la palabra aquí"
       />
-      <br>
-      <br><button (click)="validateWord()">Validar</button>
+      <br /><br />
+      <button (click)="validateWord()">Validar</button>
     </div>
 
     <!-- Sección de Feedback -->
@@ -46,11 +45,12 @@
         [value]="feedback">
       </textarea>
       <img
-          class="feedback-avatar"
-          [src]="avatarState"
-          alt="Feedback Avatar" />
-          <br><br>
-        <button class="play-feedback" (click)="playFeedback()" aria-label="Reproducir Feedback">🔊 Escuchar Feedback</button>
-      </div>
+        class="feedback-avatar"
+        [src]="avatarState"
+        alt="Feedback Avatar"
+      />
+      <br /><br />
+      <button class="play-feedback" (click)="playFeedback()" aria-label="Reproducir Feedback">🔊 Escuchar Feedback</button>
     </div>
   </div>
+</div>

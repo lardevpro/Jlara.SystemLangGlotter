@@ -2,9 +2,12 @@ import { OnDestroy, OnInit } from "@angular/core";
 import { ProgressService } from "@proxy/jlara-system-leng/progresses/progress.service";
 import { Component } from "@angular/core";
 import { TabComponent } from "../tab/tab.component";
-import { catchError, of } from "rxjs";
+import { catchError, of, interval, lastValueFrom } from "rxjs";
 import { FormsModule } from "@angular/forms";
 import { ConfigStateService } from "@abp/ng.core";
+import { switchMap } from "rxjs/operators";
+import { ExerciseService } from "@proxy/jlara-system-leng/exercise";
+import { ProgressStateService } from "src/app/services/progress-state-service.service";
 
 @Component({
   standalone: true,
@@ -15,14 +18,15 @@ import { ConfigStateService } from "@abp/ng.core";
 })
 export class WritingComponent implements OnInit, OnDestroy {
   user = {
+    id: '',
     name: 'Usuario',
-    level: 'Desconocido',
+    level: '',
     image: '../../../assets/avatars/default_avatar.png',
   };
 
   wordAnswersCorrect: string[] = [];
   avatarState = '../../../assets/avatars/correct_request.png';
-  wordList = ['hello', 'world', 'angular', 'typescript', 'javascript'];
+  wordList: string[] = [];
   currentWord = '';
   feedback = '';
   progress = 0;
@@ -31,36 +35,103 @@ export class WritingComponent implements OnInit, OnDestroy {
   timer = 0;
   userInput = '';
   private intervalId: any;
+  private autoSaveInterval: any;
+  progressDto: any;
+  isLoading = false;
 
-  constructor(private progressService: ProgressService,
-                      configStateService: ConfigStateService,
-  ) 
-  {
-    this.user.name = configStateService.getOne('currentUser').userName;
+  constructor(
+    private progressService: ProgressService, 
+    private configStateService: ConfigStateService,
+    private exerciseService: ExerciseService,
+    private progressStateService: ProgressStateService,
+  ) {
+    const currentUser = this.configStateService.getOne('currentUser');
+    this.user.name = currentUser.userName;
+    this.user.id = currentUser.id;
 
+    // Sincronizar nivel inicial desde el servicio compartido
+    this.progressStateService.currentLevel$.subscribe((level) => {
+      this.user.level = this.mapLevel(level);
+      this.resetProgress();
+      this.getExercise(level); // Cargar ejercicios del nivel actual
+    });
   }
 
-  ngOnInit() {
-    this.loadNextWord();
-    this.startTimer();
+  async ngOnInit() {
+    try {
+      await this.initializeUserProgress();
+      await this.getExercise(this.progressDto.level);
+      this.startTimer();
+      this.startAutoSave();
+    } catch (error) {
+      console.error('Error inicializando el componente:', error);
+    }
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalId);
+    clearInterval(this.autoSaveInterval);
   }
 
-  loadNextWord() {
+  async loadNextWord() {
     const remainingWords = this.wordList.filter(
       (word) => !this.wordAnswersCorrect.includes(word)
     );
     if (remainingWords.length > 0) {
       const randomIndex = Math.floor(Math.random() * remainingWords.length);
       this.currentWord = remainingWords[randomIndex];
-      //this.feedback = '';
+    } else if (this.wordAnswersCorrect.length === this.wordList.length) {
+      this.feedback = '¡Felicidades! Has completado el nivel.';
+      await this.advanceLevel();
     } else {
       this.currentWord = '';
-      this.feedback = '¡Felicidades! Has completado el nivel.';
     }
+    this.updateProgress();
+  }
+
+  async advanceLevel() {
+    if (this.wordAnswersCorrect.length !== this.wordList.length) {
+      console.warn('El nivel no se puede avanzar porque no está completo.');
+      return;
+    }
+
+    this.progressStateService.advanceLevel(); // Servicio gestiona el cambio de nivel
+
+    // Reset local
+    this.wordList = [];
+    this.wordAnswersCorrect = [];
+    this.correctAnswers = 0;
+    this.incorrectAnswers = 0;
+    this.progress = 0;
+
+    await this.updateProgressUserDB();
+    const newLevel = this.progressStateService.getCurrentLevel(); // Obtén el nuevo nivel
+    await this.getExercise(newLevel); // Carga ejercicios del nuevo nivel
+  }
+
+  validateWord() {
+    const normalizedInput = this.userInput.trim().toLowerCase();
+    const normalizedCurrentWord = this.currentWord.trim().toLowerCase();
+
+    if (normalizedInput === normalizedCurrentWord) {
+      this.correctAnswers++;
+      this.wordAnswersCorrect.push(this.currentWord);
+      this.feedback = '¡Correcto!';
+      this.avatarState = '../../../assets/avatars/correct_request.png';
+      this.progressStateService.incrementCorrectAnswers(); // Aumenta los aciertos globales
+    } else {
+      this.incorrectAnswers++;
+      this.feedback = `Incorrecto. La palabra correcta era: ${this.currentWord}`;
+      this.avatarState = '../../../assets/avatars/error_request.png';
+    }
+
+    this.userInput = '';
+    this.updateProgress();
+    this.loadNextWord();
+  }
+
+  async updateProgress() {
+    this.progress = (this.wordAnswersCorrect.length / this.wordList.length) * 100;
   }
 
   startTimer() {
@@ -69,46 +140,116 @@ export class WritingComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
+  startAutoSave() {
+    this.autoSaveInterval = interval(5000)
+      .pipe(
+        switchMap(() => this.updateProgressUserDB()),
+        catchError((error) => {
+          console.error('Error al guardar el progreso del usuario:', error);
+          return of(null);
+        })
+      )
+      .subscribe();
+  }
+
   playWord() {
     const utterance = new SpeechSynthesisUtterance(this.currentWord);
     utterance.lang = 'en-US';
     speechSynthesis.speak(utterance);
   }
 
-  validateWord() {
-    if (this.userInput.toLowerCase() === this.currentWord.toLowerCase()) {
-      this.correctAnswers++;
-      this.feedback = '¡Correcto!';
-      this.avatarState = '../../../assets/avatars/correct_request.png';
-    } else {
-      this.incorrectAnswers++;
-      this.feedback = `Incorrecto. La palabra correcta era: ${this.currentWord}`;
-      this.avatarState = '../../../assets/avatars/error_request.png';
+  async initializeUserProgress() {
+    this.isLoading = true;
+    try {
+      const response = await lastValueFrom(
+        this.progressService.getList({ userId: this.user.id, maxResultCount: 1 })
+      );
+      if (response.items.length > 0) {
+        this.progressDto = response.items[0];
+        this.progressStateService.resetCorrectAnswers(); // Reinicia aciertos globales
+        this.progressStateService.advanceLevel(); // Sincroniza nivel si es necesario
+      }
+    } catch (error) {
+      console.error('Error cargando el progreso del usuario:', error);
+    } finally {
+      this.isLoading = false;
     }
-    this.userInput = '';
-    this.progress = (this.correctAnswers / this.wordList.length) * 100;
-    //this.updateProgress(false);
-    this.loadNextWord();
   }
 
-    updateProgress(isCompleted: boolean) {
-      const progressData = {
-        userId: '1', // Cambia esto por el ID del usuario actual
-        progress: this.progress,
-        isCompleted
-      };
-
-      this.progressService.create(progressData).pipe(
-        catchError((error) => {
-          console.error('Error al actualizar el progreso:', error);
-          return of(null);
-        })
-      ).subscribe();
+  async updateProgressUserDB() {
+    if (!this.progressDto) return;
+  
+    const secondsPractice = this.progressDto.secondsPractice + this.timer;
+    const newProgressLevelCurrent = Math.max(
+      this.progressDto.progressLevelCurrent,
+      this.progress
+    );
+  
+    const updateDto = {
+      secondsPractice,
+      progressLevelCurrent: newProgressLevelCurrent, // Progreso compartido
+      successesWriting: this.correctAnswers, // Aciertos específicos de escritura
+      errorsWriting: this.incorrectAnswers, // Errores específicos de escritura
+      userId: this.user.id,
+      level: this.mapLevel(this.user.level, true), // Nivel compartido
+    };
+  
+    try {
+      const response = await lastValueFrom(
+        this.progressService.update(this.progressDto.id, updateDto).pipe()
+      );
+      console.log('Progreso actualizado:', response);
+    } catch (error) {
+      console.error('Error al actualizar el progreso del usuario:', error);
     }
+  }
 
-    playFeedback() {
-      const utterance = new SpeechSynthesisUtterance(this.feedback);
-      utterance.lang = 'en-US'; // Configura el idioma
-      speechSynthesis.speak(utterance);
+  private mapLevel(level: string, toDto: boolean = false): string {
+    const levels = {
+      easy: 'Fácil',
+      medium: 'Medio',
+      advanced: 'Avanzado',
+      expert: 'Experto',
+    };
+    return toDto
+      ? Object.keys(levels).find((key) => levels[key] === level) || 'Desconocido'
+      : levels[level] || 'Desconocido';
+  }
+
+  playFeedback() {
+    const utterance = new SpeechSynthesisUtterance(this.feedback);
+    utterance.lang = 'en-US';
+    speechSynthesis.speak(utterance);
+  }
+
+  async getExercise(levelDifficultyUser: string) {
+    try {
+      const response = await this.exerciseService.getList({
+        difficultyLevel: levelDifficultyUser,
+        focusArea: 'writing',
+        maxResultCount: 10,
+      }).toPromise();
+  
+      if (response.items && response.items.length > 0) {
+        this.wordList = response.items.map((item) => item.phrase.trim());
+        this.loadNextWord(); // Carga la primera palabra tras obtener las palabras
+        console.log('Palabras cargadas exitosamente:', this.wordList);
+      } else {
+        console.warn('No se encontraron ejercicios para el nivel especificado.');
+        this.feedback = 'No hay palabras disponibles para este nivel.';
+      }
+    } catch (error) {
+      console.error('Error al obtener ejercicios:', error);
+      this.feedback = 'Ocurrió un error al cargar los ejercicios. Por favor, inténtalo más tarde.';
     }
+  }
+
+  private resetProgress() {
+    this.correctAnswers = 0;
+    this.incorrectAnswers = 0;
+    this.progress = 0;
+    this.wordAnswersCorrect = [];
+    this.timer = 0;
+  }
+
 }

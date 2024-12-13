@@ -12,7 +12,7 @@
           <p><strong>Usuario:</strong> {{ user.name }}</p>
           <p><strong>Nivel:</strong> {{ user.level }}</p>
           <div class="progress-container">
-            <p><strong>Progreso:</strong> {{ progress.toFixed(1) }}%</p>
+            <p><strong>Progreso:</strong> {{ progress }}%</p>
             <div class="progress-bar">
               <div
                 class="progress-bar-fill"
@@ -30,7 +30,15 @@
     <div class="word-section">
       <h4>Palabra a pronunciar:</h4>
       <p class="word">{{ currentWord }}</p>
-      <button (click)="startRecording()">🎤 Iniciar Grabación</button>
+      
+      <!-- Botón dinámico -->
+      <ng-container *ngIf="!isLevelCompleted; else levelCompleted">
+        <button (click)="startRecording()">🎤 Iniciar Grabación</button>
+      </ng-container>
+      <ng-template #levelCompleted>
+        <button class="level-complete-btn" (click)="navigateToProgress()">➡️ Ir a Progreso</button>
+      </ng-template>
+      
       <div class="timer">
         <p><strong>Tiempo Practicando:</strong> {{ timer }}s</p>
       </div>
