@@ -153,8 +153,8 @@ export class ProgressComponent implements OnInit {
                 this.progressDto.level === 'expert' ? 'Experto' :
                 'Desconocido';
     this.progressLevel = this.progressDto.progressLevelCurrent; //de 0 a 20 frases que hay por nivel
-    this.writtenSuccesses =  this.progressDto.successesWriting /20 * 100; 
-    this.pronunciationSuccesses =  this.progressDto.successesPronunciation /20 * 100; 
+    this.writtenSuccesses =  this.progressDto.successesWriting; 
+    this.pronunciationSuccesses =  this.progressDto.successesPronunciation; 
     }
 
     //aqui quiero que si no hay ejercicio de usuario se cree uno nuevo
