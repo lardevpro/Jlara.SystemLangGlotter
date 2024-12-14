@@ -1,11 +1,13 @@
 import { OnDestroy, OnInit } from "@angular/core";
 import { ProgressService } from "@proxy/jlara-system-leng/progresses/progress.service";
-import { SpeechRecognitionService } from "src/app/services/speech-to-text-recognition.service";
 import { Component } from "@angular/core";
 import { TabComponent } from "../tab/tab.component";
 import { catchError, of, interval, lastValueFrom } from "rxjs";
 import { FormsModule } from "@angular/forms";
 import { ConfigStateService } from "@abp/ng.core";
+import { switchMap } from "rxjs/operators";
+import { ExerciseService } from "@proxy/jlara-system-leng/exercise";
+import { ProgressStateService } from "src/app/services/progress-state-service.service";
 
 @Component({
   standalone: true,
@@ -16,8 +18,9 @@ import { ConfigStateService } from "@abp/ng.core";
 })
 export class WritingComponent implements OnInit, OnDestroy {
   user = {
+    id: '',
     name: 'Usuario',
-    level: 'Desconocido',
+    level: '',
     image: '../../../assets/avatars/default_avatar.png',
   };
 
@@ -36,17 +39,33 @@ export class WritingComponent implements OnInit, OnDestroy {
   progressDto: any;
   isLoading = false;
 
-  constructor(private progressService: ProgressService,
-                      configStateService: ConfigStateService,
-  ) 
-  {
-    this.user.name = configStateService.getOne('currentUser').userName;
+  constructor(
+    private progressService: ProgressService, 
+    private configStateService: ConfigStateService,
+    private exerciseService: ExerciseService,
+    private progressStateService: ProgressStateService,
+  ) {
+    const currentUser = this.configStateService.getOne('currentUser');
+    this.user.name = currentUser.userName;
+    this.user.id = currentUser.id;
 
+    // Sincronizar nivel inicial desde el servicio compartido
+    this.progressStateService.currentLevel$.subscribe((level) => {
+      this.user.level = this.mapLevel(level);
+      this.resetProgress();
+      this.getExercise(level); // Cargar ejercicios del nivel actual
+    });
   }
 
-  ngOnInit() {
-    this.loadNextWord();
-    this.startTimer();
+  async ngOnInit() {
+    try {
+      await this.initializeUserProgress();
+      await this.getExercise(this.progressDto.level);
+      this.startTimer();
+      this.startAutoSave();
+    } catch (error) {
+      console.error('Error inicializando el componente:', error);
+    }
   }
 
   ngOnDestroy() {
@@ -139,36 +158,63 @@ export class WritingComponent implements OnInit, OnDestroy {
     speechSynthesis.speak(utterance);
   }
 
-  validateWord() {
-    if (this.userInput.toLowerCase() === this.currentWord.toLowerCase()) {
-      this.correctAnswers++;
-      this.feedback = '¡Correcto!';
-      this.avatarState = '../../../assets/avatars/correct_request.png';
-    } else {
-      this.incorrectAnswers++;
-      this.feedback = `Incorrecto. La palabra correcta era: ${this.currentWord}`;
-      this.avatarState = '../../../assets/avatars/error_request.png';
+  async initializeUserProgress() {
+    this.isLoading = true;
+    try {
+      const response = await lastValueFrom(
+        this.progressService.getList({ userId: this.user.id, maxResultCount: 1 })
+      );
+      if (response.items.length > 0) {
+        this.progressDto = response.items[0];
+        this.progressStateService.resetCorrectAnswers(); // Reinicia aciertos globales
+        this.progressStateService.advanceLevel(); // Sincroniza nivel si es necesario
+      }
+    } catch (error) {
+      console.error('Error cargando el progreso del usuario:', error);
+    } finally {
+      this.isLoading = false;
     }
-    this.userInput = '';
-    this.progress = (this.correctAnswers / this.wordList.length) * 100;
-    //this.updateProgress(false);
-    this.loadNextWord();
   }
 
-    updateProgress(isCompleted: boolean) {
-      const progressData = {
-        userId: '1', // Cambia esto por el ID del usuario actual
-        progress: this.progress,
-        isCompleted
-      };
-
-      this.progressService.create(progressData).pipe(
-        catchError((error) => {
-          console.error('Error al actualizar el progreso:', error);
-          return of(null);
-        })
-      ).subscribe();
+  async updateProgressUserDB() {
+    if (!this.progressDto) return;
+  
+    const secondsPractice = this.progressDto.secondsPractice + this.timer;
+    const newProgressLevelCurrent = Math.max(
+      this.progressDto.progressLevelCurrent,
+      this.progress
+    );
+  
+    const updateDto = {
+      secondsPractice,
+      progressLevelCurrent: newProgressLevelCurrent, // Progreso compartido
+      successesWriting: this.correctAnswers, // Aciertos específicos de escritura
+      errorsWriting: this.incorrectAnswers, // Errores específicos de escritura
+      userId: this.user.id,
+      level: this.mapLevel(this.user.level, true), // Nivel compartido
+    };
+  
+    try {
+      const response = await lastValueFrom(
+        this.progressService.update(this.progressDto.id, updateDto).pipe()
+      );
+      console.log('Progreso actualizado:', response);
+    } catch (error) {
+      console.error('Error al actualizar el progreso del usuario:', error);
     }
+  }
+
+  private mapLevel(level: string, toDto: boolean = false): string {
+    const levels = {
+      easy: 'Fácil',
+      medium: 'Medio',
+      advanced: 'Avanzado',
+      expert: 'Experto',
+    };
+    return toDto
+      ? Object.keys(levels).find((key) => levels[key] === level) || 'Desconocido'
+      : levels[level] || 'Desconocido';
+  }
 
   playFeedback() {
     const utterance = new SpeechSynthesisUtterance(this.feedback);

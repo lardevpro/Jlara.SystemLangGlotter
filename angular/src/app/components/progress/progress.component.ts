@@ -21,7 +21,7 @@ export class ProgressComponent implements OnInit {
   minPracticed: number =  0;
   segPracticed: number = 0;
   userName: string;
-  userPhoto: string = 'https://via.placeholder.com/70';
+  userPhoto: string = '../../../assets/avatars/default_avatar.png';
   level: string;
   progressLevel: number = 0; //de 0 a 20 frases que hay por nivel
   writtenSuccesses: number = 0; 
@@ -144,30 +144,20 @@ export class ProgressComponent implements OnInit {
         });
     }
 
-    private mapLevel(level: string): string {
-      switch (level) {
-        case 'easy':
-          return 'Principiante';
-        case 'medium':
-          return 'Medio';
-        case 'advanced':
-          return 'Avanzado';
-        case 'expert':
-          return 'Experto';
-        default:
-          return 'Desconocido';
-      }
-    }
 
   initHtmlDataUser() {
     //this.userPhoto: string = 'https://via.placeholder.com/70';
-    this.level = this.mapLevel(this.progressDto.level);
-    
+    this.level = this.progressDto.level === 'easy' ? 'Fácil' :
+                this.progressDto.level === 'medium' ? 'Medio' :
+                this.progressDto.level === 'advanced' ? 'Avanzado' :
+                this.progressDto.level === 'expert' ? 'Experto' :
+                'Desconocido';
     this.progressLevel = this.progressDto.progressLevelCurrent; //de 0 a 20 frases que hay por nivel
     this.writtenSuccesses =  this.progressDto.successesWriting /20 * 100; 
     this.pronunciationSuccesses =  this.progressDto.successesPronunciation /20 * 100;
     console.log(this.progressDto); 
     }
+
+    //aqui quiero que si no hay ejercicio de usuario se cree uno nuevo
+
 }
-
-

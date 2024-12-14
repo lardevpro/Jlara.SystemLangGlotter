@@ -3,16 +3,10 @@
   <div class="layout-container">
     <!-- Información del usuario -->
     <div class="user-info">
-
       <h2>
         <img class="user-avatar" [src]="user.image" alt="User Avatar" />
         {{ user.name }}
       </h2>
-
-      <h2>Información del Usuario</h2>
-      <p><strong>Nombre:</strong> {{ user.name }}</p>
-      <p><strong>Nivel:</strong> {{ user.level }}</p>
-
       <p><strong>Progreso:</strong> {{ progress }}%</p>
       <div class="progress-container">
         <div class="progress-bar">
@@ -22,6 +16,9 @@
       <p><strong>Nivel:</strong> {{ user.level }}</p>
       <p><strong>Aciertos:</strong> {{ correctAnswers }}</p>
       <p><strong>Fallos:</strong> {{ incorrectAnswers }}</p>
+      <div class="timer">
+        <p><strong>Tiempo Practicando:</strong> {{ timer }}s</p>
+      </div>
     </div>
 
     <!-- Área de práctica -->
@@ -29,18 +26,11 @@
       <h3>Práctica de Escritura</h3>
       <br />
       <button (click)="playWord()">🔊 Escuchar Palabra</button>
-
       <br /><br />
       <input
         type="text"
         [(ngModel)]="userInput"
-        placeholder="Escribe la palabra aquí">
-
-      <br><br><br>
-      <input 
-        type="text" 
-        [(ngModel)]="userInput" 
-        placeholder="Escribe la palabra aquí" 
+        placeholder="Escribe la palabra aquí"
       />
       <br /><br />
       <button (click)="validateWord()">Validar</button>
