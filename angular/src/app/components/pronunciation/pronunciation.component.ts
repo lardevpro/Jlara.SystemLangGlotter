@@ -9,6 +9,8 @@ import { switchMap, catchError, timeout } from 'rxjs/operators';
 import { ExerciseService } from '@proxy/jlara-system-leng/exercise';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ProgressStateService } from 'src/app/services/progress-state-service.service';
+
 
 @Component({
   selector: 'app-pronunciation',
@@ -22,7 +24,9 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     name: '',
     level: '',
     image: '../../../assets/avatars/default_avatar.png',
+    id: '',
   };
+  totalHits = 0;
   currentWord = '';
   avatarState = '../../../assets/avatars/correct_request.png';
   wordList: string[] = [];
@@ -44,10 +48,12 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     private configStateService: ConfigStateService,
     private progressService: ProgressService,
     private exerciseService: ExerciseService,
-    private router: Router
+    private router: Router,
+    private progressStateService: ProgressStateService,
   ) {
     this.currentUser = this.configStateService.getOne('currentUser');
     this.user.name = this.currentUser.userName;
+    this.user.id = this.currentUser.id;
   }
 
   navigateToProgress() {
@@ -128,41 +134,23 @@ export class PronunciationComponent implements OnInit, OnDestroy {
   
 
   async advanceLevel() {
-    // Verificar que se cumpla el requisito de 20 aciertos
-    if (this.correctAnswers < 20) {
-      console.warn('El nivel no se puede avanzar porque no se han alcanzado los aciertos requeridos.');
+    const totalCorrectAnswers = this.correctAnswers + this.progressDto.successesWriting;
+
+    if (totalCorrectAnswers < 20) {
+      console.warn('El nivel no se puede avanzar porque no se ha alcanzado el umbral de 20 aciertos.');
       return;
     }
-  
-    // Asignar el siguiente nivel
-    if (this.progressDto.level === 'easy') {
-      this.progressDto.level = 'medium';
-    } else if (this.progressDto.level === 'medium') {
-      this.progressDto.level = 'advanced';
-    } else if (this.progressDto.level === 'advanced') {
-      this.progressDto.level = 'expert';
-    } else {
-      this.feedback = '¡Has completado todos los niveles disponibles!';
-      this.isLevelCompleted = true; // Nivel completado
-      return; // Detener si ya no hay más niveles
-    }
-  
-    // Reiniciar valores
+
+    // Reset local
+    this.wordList = [];
+    this.wordAnswersCorrect = [];
     this.correctAnswers = 0;
     this.incorrectAnswers = 0;
     this.progress = 0;
-    this.wordAnswersCorrect = [];
-    this.user.level = this.mapLevel(this.progressDto.level);
-  
-    // Guardar el progreso actualizado en la base de datos
+
     await this.updateProgressUserDB();
-  
-    // Cargar nuevos ejercicios para el siguiente nivel
-    await this.getExercise(this.progressDto.level);
-    
-    // Feedback para el usuario
-    this.feedback = `¡Felicidades! Ahora estás en el nivel ${this.user.level}.`;
-    this.isLevelCompleted = true; // Marcar el nivel como completado
+    const newLevel = this.progressStateService.getNextLevel(); // Obtén el nuevo nivel
+    await this.getExercise(newLevel); // Carga ejercicios del nuevo nivel
   }
   
   startRecording() {
@@ -207,10 +195,10 @@ export class PronunciationComponent implements OnInit, OnDestroy {
   }
 
   async updateProgress() {
-    const requiredWords = 20;
-    const newProgress = Math.min((this.correctAnswers / requiredWords) * 100, 100);
-    this.progress = newProgress;
-  }  
+    // Aquí calculamos el progreso sumando aciertos de pronunciación y escritura
+    const totalCorrectAnswers = this.correctAnswers + this.progressDto.successesWriting; 
+    this.progress = totalCorrectAnswers; // El progreso es la suma de ambos aciertos
+  }
 
   async initializeUserProgress() {
     this.isLoading = true;
@@ -223,6 +211,9 @@ export class PronunciationComponent implements OnInit, OnDestroy {
         this.progressDto = response.items[0];
         console.log('Progreso cargado:', this.progressDto);
         this.user.level = this.mapLevel(this.progressDto.level);
+        this.totalHits = this.progressDto.successesPronunciation + this.progressDto.successesWriting;
+        this.correctAnswers = this.progressDto.successesPronunciation || 0;
+        this.incorrectAnswers = this.progressDto.errorsPronunciation || 0;
         
         // Carga el número de palabras acertadas y actualiza el progreso
         this.correctAnswers = this.progressDto.successesPronunciation || 0;
@@ -238,22 +229,31 @@ export class PronunciationComponent implements OnInit, OnDestroy {
 
   async updateProgressUserDB() {
     if (!this.progressDto) return;
-  
+
+    const totalCorrectAnswers = this.correctAnswers + this.progressDto.successesWriting;
     const secondsPractice = this.progressDto.secondsPractice + this.timer;
+
     const newProgressLevelCurrent = Math.max(
       this.progressDto.progressLevelCurrent,
       this.progress
     );
-  
+
     const updateDto = {
       secondsPractice,
       progressLevelCurrent: newProgressLevelCurrent, // Progreso compartido
-      successesPronunciation: this.correctAnswers, // Aciertos específicos de pronunciación
-      errorsPronunciation: this.incorrectAnswers, // Errores específicos de pronunciación
-      userId: this.currentUser.id,
+      successesPronunciation: this.correctAnswers, // Aciertos de pronunciación
+      errorsPronunciation: this.incorrectAnswers, // Fallos de pronunciación
+      errorsWriting: this.progressDto.errorsWriting, // Fallos de escritura
+      successesWriting: this.progressDto.successesWriting, // Aciertos de escrit
+      userId: this.user.id,
       level: this.mapLevel(this.user.level, true), // Nivel compartido
     };
-  
+
+    if (totalCorrectAnswers >= 20) {
+      await this.advanceLevel();
+    }
+
+    // Guardamos el progreso con los fallos de pronunciación
     try {
       const response = await lastValueFrom(
         this.progressService.update(this.progressDto.id, updateDto).pipe()
@@ -263,6 +263,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
       console.error('Error al actualizar el progreso del usuario:', error);
     }
   }
+  
 
   private mapLevel(level: string, toDto: boolean = false): string {
     const levels = {
@@ -289,7 +290,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
         .getList({
           difficultyLevel: levelDifficultyUser,
           focusArea: 'pronunciation',
-          maxResultCount: 2,
+          maxResultCount: 20,
         })
         .toPromise();
   

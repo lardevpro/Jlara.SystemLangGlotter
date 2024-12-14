@@ -1,6 +1,5 @@
-import { OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ProgressService } from "@proxy/jlara-system-leng/progresses/progress.service";
-import { Component } from "@angular/core";
 import { TabComponent } from "../tab/tab.component";
 import { catchError, of, interval, lastValueFrom } from "rxjs";
 import { FormsModule } from "@angular/forms";
@@ -8,13 +7,15 @@ import { ConfigStateService } from "@abp/ng.core";
 import { switchMap } from "rxjs/operators";
 import { ExerciseService } from "@proxy/jlara-system-leng/exercise";
 import { ProgressStateService } from "src/app/services/progress-state-service.service";
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   standalone: true,
   selector: 'app-writing',
   templateUrl: './writing.component.html',
   styleUrls: ['./writing.component.scss'],
-  imports: [FormsModule, TabComponent]
+  imports: [FormsModule, TabComponent, CommonModule]
 })
 export class WritingComponent implements OnInit, OnDestroy {
   user = {
@@ -23,7 +24,7 @@ export class WritingComponent implements OnInit, OnDestroy {
     level: '',
     image: '../../../assets/avatars/default_avatar.png',
   };
-
+  totalHits = 0;
   wordAnswersCorrect: string[] = [];
   avatarState = '../../../assets/avatars/correct_request.png';
   wordList: string[] = [];
@@ -40,7 +41,7 @@ export class WritingComponent implements OnInit, OnDestroy {
   isLoading = false;
 
   constructor(
-    private progressService: ProgressService, 
+    private progressService: ProgressService,
     private configStateService: ConfigStateService,
     private exerciseService: ExerciseService,
     private progressStateService: ProgressStateService,
@@ -90,24 +91,28 @@ export class WritingComponent implements OnInit, OnDestroy {
   }
 
   async advanceLevel() {
-    if (this.wordAnswersCorrect.length !== this.wordList.length) {
-      console.warn('El nivel no se puede avanzar porque no está completo.');
+    const totalCorrectAnswers = this.correctAnswers + this.progressDto.successesPronunciation;
+  
+    // Solo cambiamos de nivel si la suma de ambos aciertos es >= 20
+    if (totalCorrectAnswers < 20) {
+      console.warn('El nivel no se puede avanzar porque no se ha alcanzado el umbral de 20 aciertos.');
       return;
     }
-
+  
     this.progressStateService.advanceLevel(); // Servicio gestiona el cambio de nivel
-
+  
     // Reset local
     this.wordList = [];
     this.wordAnswersCorrect = [];
     this.correctAnswers = 0;
     this.incorrectAnswers = 0;
     this.progress = 0;
-
+  
     await this.updateProgressUserDB();
     const newLevel = this.progressStateService.getCurrentLevel(); // Obtén el nuevo nivel
     await this.getExercise(newLevel); // Carga ejercicios del nuevo nivel
   }
+
 
   validateWord() {
     const normalizedInput = this.userInput.trim().toLowerCase();
@@ -120,7 +125,7 @@ export class WritingComponent implements OnInit, OnDestroy {
       this.avatarState = '../../../assets/avatars/correct_request.png';
       this.progressStateService.incrementCorrectAnswers(); // Aumenta los aciertos globales
     } else {
-      this.incorrectAnswers++;
+      this.incorrectAnswers++; // Incrementamos los fallos
       this.feedback = `Incorrecto. La palabra correcta era: ${this.currentWord}`;
       this.avatarState = '../../../assets/avatars/error_request.png';
     }
@@ -131,7 +136,8 @@ export class WritingComponent implements OnInit, OnDestroy {
   }
 
   async updateProgress() {
-    this.progress = (this.wordAnswersCorrect.length / this.wordList.length) * 100;
+    const totalCorrectAnswers = this.correctAnswers + this.progressDto.successesPronunciation;
+    this.progress = totalCorrectAnswers; // El progreso es la suma de los aciertos
   }
 
   startTimer() {
@@ -166,8 +172,9 @@ export class WritingComponent implements OnInit, OnDestroy {
       );
       if (response.items.length > 0) {
         this.progressDto = response.items[0];
-        this.progressStateService.resetCorrectAnswers(); // Reinicia aciertos globales
-        this.progressStateService.advanceLevel(); // Sincroniza nivel si es necesario
+        this.totalHits = this.progressDto.successesPronunciation + this.progressDto.successesWriting;
+        this.correctAnswers = this.progressDto.successesWriting;
+        this.incorrectAnswers = this.progressDto.errorsWriting; // Cargamos los fallos de escritura
       }
     } catch (error) {
       console.error('Error cargando el progreso del usuario:', error);
@@ -176,24 +183,34 @@ export class WritingComponent implements OnInit, OnDestroy {
     }
   }
 
-  async updateProgressUserDB() {
+   async updateProgressUserDB() {
     if (!this.progressDto) return;
-  
+
+    const totalCorrectAnswers = this.correctAnswers + this.progressDto.successesPronunciation;
     const secondsPractice = this.progressDto.secondsPractice + this.timer;
+
     const newProgressLevelCurrent = Math.max(
       this.progressDto.progressLevelCurrent,
       this.progress
     );
-  
+
     const updateDto = {
       secondsPractice,
       progressLevelCurrent: newProgressLevelCurrent, // Progreso compartido
-      successesWriting: this.correctAnswers, // Aciertos específicos de escritura
-      errorsWriting: this.incorrectAnswers, // Errores específicos de escritura
+      successesWriting: this.correctAnswers, // Aciertos de escritura
+      errorsWriting: this.incorrectAnswers, // Fallos de escritura
+      successesPronunciation: this.progressDto.successesPronunciation, // Aciertos de pronunciación
+      errorsPronunciation: this.progressDto.errorsPronunciation, // Fallos de pronunciación
+      
       userId: this.user.id,
       level: this.mapLevel(this.user.level, true), // Nivel compartido
     };
-  
+
+    if (totalCorrectAnswers >= 20) {
+      await this.advanceLevel();
+    }
+
+    // Guardamos el progreso con los fallos de escritura
     try {
       const response = await lastValueFrom(
         this.progressService.update(this.progressDto.id, updateDto).pipe()
@@ -229,7 +246,7 @@ export class WritingComponent implements OnInit, OnDestroy {
         focusArea: 'writing',
         maxResultCount: 10,
       }).toPromise();
-  
+
       if (response.items && response.items.length > 0) {
         this.wordList = response.items.map((item) => item.phrase.trim());
         this.loadNextWord(); // Carga la primera palabra tras obtener las palabras
@@ -251,5 +268,4 @@ export class WritingComponent implements OnInit, OnDestroy {
     this.wordAnswersCorrect = [];
     this.timer = 0;
   }
-
 }
