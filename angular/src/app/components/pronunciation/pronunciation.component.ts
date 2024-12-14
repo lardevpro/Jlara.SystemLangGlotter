@@ -159,7 +159,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
   
     // Cargar nuevos ejercicios para el siguiente nivel
     await this.getExercise(this.progressDto.level);
-  
+    
     // Feedback para el usuario
     this.feedback = `¡Felicidades! Ahora estás en el nivel ${this.user.level}.`;
     this.isLevelCompleted = true; // Marcar el nivel como completado
@@ -287,7 +287,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     try {
       const response = await this.exerciseService
         .getList({
-          difficultyLevel: this.user.level,
+          difficultyLevel: levelDifficultyUser,
           focusArea: 'pronunciation',
           maxResultCount: 2,
         })
