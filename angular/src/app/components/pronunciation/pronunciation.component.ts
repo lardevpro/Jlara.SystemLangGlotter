@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProgressStateService } from 'src/app/services/progress-state-service.service';
 
-
 @Component({
   selector: 'app-pronunciation',
   templateUrl: './pronunciation.component.html',
@@ -56,11 +55,16 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     this.user.id = this.currentUser.id;
   }
 
+  /**
+   * Navigate to the progress screen.
+   */
   navigateToProgress() {
-    this.router.navigate(['/progress']); // Reemplaza '/progress' con la ruta de tu pantalla de progreso
+    this.router.navigate(['/progress']); // Replace '/progress' with the route to your progress screen
   }
 
-
+  /**
+   * Initialize the component.
+   */
   async ngOnInit() {
     try {
       await this.initializeUserProgress();
@@ -83,6 +87,9 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Clean up the component.
+   */
   ngOnDestroy() {
     if (this.interval) {
       clearInterval(this.interval);
@@ -90,14 +97,20 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     this.speechService.stop();
   }
 
+  /**
+   * Start the timer.
+   */
   startTimer() {
     this.interval = setInterval(() => {
       this.timer++;
     }, 1000);
   }
 
+  /**
+   * Start auto-saving the progress.
+   */
   startAutoSave() {
-    interval(5000) // Guardar cada 30 segundos en lugar de cada 1 segundo
+    interval(5000) // Save every 5 seconds instead of every 1 second
       .pipe(
         switchMap(() => this.updateProgressUserDB()),
         catchError((error) => {
@@ -107,20 +120,22 @@ export class PronunciationComponent implements OnInit, OnDestroy {
       )
       .subscribe();
   }
-  
 
+  /**
+   * Load the next word.
+   */
   async loadNextWord() {
-    // Filtrar las palabras que no han sido acertadas
+    // Filter the words that have not been answered correctly
     const remainingWords = this.wordList.filter(
       (word) => !this.wordAnswersCorrect.includes(word)
     );
-  
-    // Verificar si hay palabras restantes
+
+    // Check if there are remaining words
     if (remainingWords.length > 0) {
       const randomIndex = Math.floor(Math.random() * remainingWords.length);
       this.currentWord = remainingWords[randomIndex];
     } else {
-      // Si no hay palabras restantes y el usuario acertó todas
+      // If there are no remaining words and the user has answered all correctly
       if (this.correctAnswers >= 20) {
         this.feedback = '¡Felicidades! Has completado el nivel.';
         await this.advanceLevel();
@@ -128,11 +143,13 @@ export class PronunciationComponent implements OnInit, OnDestroy {
         this.feedback = 'No hay más palabras disponibles para este nivel.';
       }
     }
-  
-    this.updateProgress(); // Actualizar la barra de progreso
-  }
-  
 
+    this.updateProgress(); // Update the progress bar
+  }
+
+  /**
+   * Advance to the next level.
+   */
   async advanceLevel() {
     const totalCorrectAnswers = this.correctAnswers + this.progressDto.successesWriting;
 
@@ -141,7 +158,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Reset local
+    // Reset local variables
     this.wordList = [];
     this.wordAnswersCorrect = [];
     this.correctAnswers = 0;
@@ -149,25 +166,32 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     this.progress = 0;
 
     await this.updateProgressUserDB();
-    const newLevel = this.progressStateService.getNextLevel(); // Obtén el nuevo nivel
-    await this.getExercise(newLevel); // Carga ejercicios del nuevo nivel
+    const newLevel = this.progressStateService.getNextLevel(); // Get the new level
+    await this.getExercise(newLevel); // Load exercises for the new level
   }
-  
+
+  /**
+   * Start recording the user's speech.
+   */
   startRecording() {
     this.feedback = 'Escuchando...';
     this.speechService.start((transcript: string) => this.evaluatePronunciation(transcript));
   }
 
+  /**
+   * Evaluate the user's pronunciation.
+   * @param userSpeech The user's speech.
+   */
   async evaluatePronunciation(userSpeech: string) {
     try {
-      // Normalizar el discurso del usuario y la palabra actual
+      // Normalize the user's speech and the current word
       const normalizeText = (text: string): string =>
         text.replace(/[?¿]/g, '').trim().toLowerCase();
-  
+
       const normalizedUserSpeech = normalizeText(userSpeech);
       const normalizedCurrentWord = normalizeText(this.currentWord);
-  
-      // Comparar los textos normalizados
+
+      // Compare the normalized texts
       if (normalizedUserSpeech === normalizedCurrentWord) {
         this.correctAnswers++;
         this.feedback = '¡Correcto! Pronunciación perfecta.';
@@ -177,36 +201,42 @@ export class PronunciationComponent implements OnInit, OnDestroy {
         this.feedback = `Incorrecto. Dijiste: "${userSpeech}". La palabra era: "${this.currentWord}".`;
         this.avatarState = '../../../assets/avatars/error_request.png';
       }
-  
+
       this.updateProgress();
-  
-      // Verificar si el usuario ha completado 20 palabras acertadas
+
+      // Check if the user has completed 20 correct words
       if (this.correctAnswers >= 20) {
         this.feedback = '¡Felicidades! Has completado el nivel.';
         await this.advanceLevel();
         return;
       }
-  
-      // Cargar la siguiente palabra
+
+      // Load the next word
       this.loadNextWord();
     } catch (error) {
       console.error('Error evaluando la pronunciación:', error);
     }
   }
 
+  /**
+   * Update the progress.
+   */
   async updateProgress() {
-    // Aquí calculamos el progreso sumando aciertos de pronunciación y escritura
-    const totalCorrectAnswers = this.correctAnswers + this.progressDto.successesWriting; 
-    this.progress = totalCorrectAnswers; // El progreso es la suma de ambos aciertos
+    // Calculate the progress by adding pronunciation and writing successes
+    const totalCorrectAnswers = this.correctAnswers + this.progressDto.successesWriting;
+    this.progress = totalCorrectAnswers; // The progress is the sum of both successes
   }
 
+  /**
+   * Initialize the user's progress.
+   */
   async initializeUserProgress() {
     this.isLoading = true;
     try {
       const response = await this.progressService
         .getList({ userId: this.currentUser.id, maxResultCount: 1 })
         .toPromise();
-  
+
       if (response.items.length > 0) {
         this.progressDto = response.items[0];
         console.log('Progreso cargado:', this.progressDto);
@@ -214,8 +244,8 @@ export class PronunciationComponent implements OnInit, OnDestroy {
         this.totalHits = this.progressDto.successesPronunciation + this.progressDto.successesWriting;
         this.correctAnswers = this.progressDto.successesPronunciation || 0;
         this.incorrectAnswers = this.progressDto.errorsPronunciation || 0;
-        
-        // Carga el número de palabras acertadas y actualiza el progreso
+
+        // Load the number of correct words and update the progress
         this.correctAnswers = this.progressDto.successesPronunciation || 0;
         this.updateProgress();
       }
@@ -225,8 +255,10 @@ export class PronunciationComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     }
   }
-  
 
+  /**
+   * Update the user's progress in the database.
+   */
   async updateProgressUserDB() {
     if (!this.progressDto) return;
 
@@ -240,20 +272,20 @@ export class PronunciationComponent implements OnInit, OnDestroy {
 
     const updateDto = {
       secondsPractice,
-      progressLevelCurrent: newProgressLevelCurrent, // Progreso compartido
-      successesPronunciation: this.correctAnswers, // Aciertos de pronunciación
-      errorsPronunciation: this.incorrectAnswers, // Fallos de pronunciación
-      errorsWriting: this.progressDto.errorsWriting, // Fallos de escritura
-      successesWriting: this.progressDto.successesWriting, // Aciertos de escrit
+      progressLevelCurrent: newProgressLevelCurrent, // Shared progress
+      successesPronunciation: this.correctAnswers, // Pronunciation successes
+      errorsPronunciation: this.incorrectAnswers, // Pronunciation errors
+      errorsWriting: this.progressDto.errorsWriting, // Writing errors
+      successesWriting: this.progressDto.successesWriting, // Writing successes
       userId: this.user.id,
-      level: this.mapLevel(this.user.level, true), // Nivel compartido
+      level: this.mapLevel(this.user.level, true), // Shared level
     };
 
     if (totalCorrectAnswers >= 20) {
       await this.advanceLevel();
     }
 
-    // Guardamos el progreso con los fallos de pronunciación
+    // Save the progress with pronunciation errors
     try {
       const response = await lastValueFrom(
         this.progressService.update(this.progressDto.id, updateDto).pipe()
@@ -263,8 +295,13 @@ export class PronunciationComponent implements OnInit, OnDestroy {
       console.error('Error al actualizar el progreso del usuario:', error);
     }
   }
-  
 
+  /**
+   * Map the level to a readable format.
+   * @param level The level to map.
+   * @param toDto Whether to map to DTO format.
+   * @returns The mapped level.
+   */
   private mapLevel(level: string, toDto: boolean = false): string {
     const levels = {
       easy: 'Fácil',
@@ -278,12 +315,19 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     return mappedLevel || 'Desconocido';
   }
 
+  /**
+   * Play the feedback using speech synthesis.
+   */
   playFeedback() {
     const utterance = new SpeechSynthesisUtterance(this.feedback);
     utterance.lang = 'en-US';
-    speechSynthesis.speak(utterance); // Llamar al sintetizador de voz
+    speechSynthesis.speak(utterance); // Call the speech synthesizer
   }
 
+  /**
+   * Get exercises for the specified level.
+   * @param levelDifficultyUser The difficulty level of the user.
+   */
   async getExercise(levelDifficultyUser: string) {
     try {
       const response = await this.exerciseService
@@ -293,12 +337,12 @@ export class PronunciationComponent implements OnInit, OnDestroy {
           maxResultCount: 20,
         })
         .toPromise();
-  
+
       if (response.items && response.items.length > 0) {
         this.wordList = response.items.map((item) => item.phrase.trim());
         console.log('Palabras cargadas exitosamente:', this.wordList);
-  
-        // Cargar la primera palabra al iniciar.
+
+        // Load the first word at the start.
         this.loadNextWord();
       } else {
         console.warn('No se encontraron ejercicios para el nivel especificado.');
@@ -309,4 +353,4 @@ export class PronunciationComponent implements OnInit, OnDestroy {
       this.feedback = 'Ocurrió un error al cargar los ejercicios. Por favor, inténtalo más tarde.';
     }
   }
-}  
+}
