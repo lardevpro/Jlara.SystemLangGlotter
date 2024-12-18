@@ -51,8 +51,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
   }
 
   navigateToProgress() {
-    this.router.navigate(['/progress']); // Reemplaza '/progress' con la ruta de tu pantalla de progreso
-  }
+    this.router.navigate(['/progress']); 
 
 
   async ngOnInit() {
@@ -123,7 +122,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
       }
     }
   
-    this.updateProgress(); // Actualizar la barra de progreso
+    this.updateProgress(); 
   }
   
 
@@ -154,7 +153,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     this.wordAnswersCorrect = [];
     this.user.level = this.mapLevel(this.progressDto.level);
   
-    // Guardar el progreso actualizado en la base de datos
+   
     await this.updateProgressUserDB();
   
     // Cargar nuevos ejercicios para el siguiente nivel
