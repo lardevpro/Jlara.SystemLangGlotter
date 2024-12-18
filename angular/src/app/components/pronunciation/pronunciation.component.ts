@@ -59,7 +59,7 @@ export class PronunciationComponent implements OnInit, OnDestroy {
    * Navigate to the progress screen.
    */
   navigateToProgress() {
-    this.router.navigate(['/progress']); // Replace '/progress' with the route to your progress screen
+    this.router.navigate(['/progress']); // Reemplaza '/progress' con la ruta de tu pantalla de progreso
   }
 
   /**
@@ -143,8 +143,8 @@ export class PronunciationComponent implements OnInit, OnDestroy {
         this.feedback = 'No hay más palabras disponibles para este nivel.';
       }
     }
-
-    this.updateProgress(); // Update the progress bar
+  
+    this.updateProgress(); // Actualizar la barra de progreso
   }
 
   /**
@@ -164,7 +164,10 @@ export class PronunciationComponent implements OnInit, OnDestroy {
     this.correctAnswers = 0;
     this.incorrectAnswers = 0;
     this.progress = 0;
-
+    this.wordAnswersCorrect = [];
+    this.user.level = this.mapLevel(this.progressDto.level);
+  
+    // Guardar el progreso actualizado en la base de datos
     await this.updateProgressUserDB();
     const newLevel = this.progressStateService.getNextLevel(); // Get the new level
     await this.getExercise(newLevel); // Load exercises for the new level
@@ -353,4 +356,4 @@ export class PronunciationComponent implements OnInit, OnDestroy {
       this.feedback = 'Ocurrió un error al cargar los ejercicios. Por favor, inténtalo más tarde.';
     }
   }
-}
+}  
